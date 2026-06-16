@@ -1,0 +1,801 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>0a11 Chile</title>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;800;900&family=Barlow:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%;font-family:Barlow,sans-serif;background:#f0ede6;color:#111;font-size:14px}
+.screen{display:none!important}.screen.active{display:flex!important;flex-direction:column;min-height:100vh}
+/* SETUP */
+.sw{padding:44px;max-width:780px}
+.ey{font-family:"Barlow Condensed",sans-serif;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:#999;margin-bottom:10px}
+.big-title{font-family:"Barlow Condensed",sans-serif;font-size:62px;font-weight:900;line-height:.95;text-transform:uppercase;letter-spacing:-1px;margin-bottom:12px}
+.sub{color:#777;font-size:14px;line-height:1.6;max-width:540px;margin-bottom:36px}
+.sec-lbl{font-family:"Barlow Condensed",sans-serif;font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:#aaa;margin-bottom:10px;font-weight:700}
+.forma-grid{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:32px}
+.fbtn{font-family:"Barlow Condensed",sans-serif;font-size:17px;font-weight:700;padding:8px 18px;border:1.5px solid #d0ccc4;border-radius:3px;background:#fff;color:#111;cursor:pointer}
+.fbtn:hover{border-color:#888}.fbtn.sel{background:#111;color:#fff;border-color:#111}
+.go-btn{font-family:"Barlow Condensed",sans-serif;font-size:18px;font-weight:800;letter-spacing:.05em;text-transform:uppercase;padding:13px 34px;background:#c0392b;color:#fff;border:none;border-radius:3px;cursor:pointer}
+.go-btn:disabled{opacity:.3;cursor:default}
+/* TOPBAR */
+.topbar{background:#fff;border-bottom:1px solid #ddd;display:flex;align-items:stretch;flex-shrink:0}
+.tb-logo{font-family:"Barlow Condensed",sans-serif;font-size:22px;font-weight:900;padding:12px 20px;border-right:1px solid #ddd;letter-spacing:-1px}
+.tb-mid{font-family:"Barlow Condensed",sans-serif;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:#999;padding:12px 20px;flex:1;display:flex;align-items:center}
+.tb-right{font-family:"Barlow Condensed",sans-serif;font-size:13px;font-weight:700;padding:12px 20px;border-left:1px solid #ddd;color:#1a6b2e;display:flex;align-items:center}
+/* DRAFT cols */
+.game-cols{display:grid;grid-template-columns:280px 1fr 230px;flex:1;overflow:hidden}
+.pl{background:#fff;border-right:1px solid #e8e4de;padding:20px 18px;display:flex;flex-direction:column;overflow-y:auto}
+.salio{font-family:"Barlow Condensed",sans-serif;font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:#bbb;margin-bottom:6px}
+.t-abbr{display:inline-block;font-family:"Barlow Condensed",sans-serif;font-size:10px;font-weight:800;background:#111;color:#fff;padding:2px 6px;border-radius:2px;margin-right:4px;letter-spacing:.04em;vertical-align:middle}
+.t-name{font-family:"Barlow Condensed",sans-serif;font-size:36px;font-weight:900;line-height:1;letter-spacing:-.5px}
+.t-year{font-family:"Barlow Condensed",sans-serif;font-size:22px;font-weight:700;color:#c0392b;margin-bottom:6px;margin-top:2px}
+.t-desc{font-size:11px;color:#888;line-height:1.55;padding-bottom:14px;border-bottom:1px solid #eee;margin-bottom:14px}
+.rr-label{font-family:"Barlow Condensed",sans-serif;font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:#bbb;margin-bottom:7px}
+.rr-btn{font-family:"Barlow Condensed",sans-serif;font-size:12px;font-weight:700;text-transform:uppercase;padding:7px 14px;border:1px solid #ddd;border-radius:3px;background:#fff;color:#111;cursor:pointer;width:100%;margin-bottom:14px}
+.rr-btn:disabled{opacity:.3;cursor:default}
+.pick-label{font-family:"Barlow Condensed",sans-serif;font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:#bbb;margin-bottom:8px}
+.prow{display:flex;align-items:center;gap:8px;padding:7px 8px;border-radius:3px;cursor:pointer;border:1px solid transparent}
+.prow:hover:not(.pdone){background:#f5f3ef}.prow.psel{background:#fffbe6;border-color:#e8c800}.prow.pdone{opacity:.25;cursor:default;pointer-events:none}
+.p-num{font-family:"Barlow Condensed",sans-serif;font-size:11px;color:#bbb;min-width:22px}
+.p-name{font-family:"Barlow Condensed",sans-serif;font-size:15px;font-weight:700;flex:1}
+.p-pos{font-family:"Barlow Condensed",sans-serif;font-size:10px;color:#999;min-width:40px}
+.p-rat{font-family:"Barlow Condensed",sans-serif;font-size:22px;font-weight:900;min-width:28px;text-align:right}
+.p-rat.gold{color:#b07800}
+.field-wrap{background:#2d6a2d;display:flex;align-items:center;justify-content:center}
+.pr{background:#fff;border-left:1px solid #e8e4de;padding:18px 16px;display:flex;flex-direction:column;overflow-y:auto}
+.sc-label{font-family:"Barlow Condensed",sans-serif;font-size:10px;letter-spacing:.15em;text-transform:uppercase;color:#aaa;margin-bottom:2px}
+.sc-val{font-family:"Barlow Condensed",sans-serif;font-size:26px;font-weight:900;margin-bottom:14px}
+.bars{display:flex;flex-direction:column;gap:10px;margin-bottom:16px;padding-bottom:16px;border-bottom:1px solid #eee}
+.bar-row{display:flex;flex-direction:column;gap:3px}
+.bar-hdr{display:flex;justify-content:space-between}
+.bar-nm{font-family:"Barlow Condensed",sans-serif;font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:#aaa}
+.bar-vl{font-family:"Barlow Condensed",sans-serif;font-size:10px;color:#ccc;font-weight:700}
+.bar-track{height:3px;background:#f0ede6;border-radius:2px;overflow:hidden}
+.bar-fill{height:100%;border-radius:2px;transition:width .35s}
+.ba{background:#c0392b}.bd{background:#222}
+.lu-label{font-family:"Barlow Condensed",sans-serif;font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:#bbb;margin-bottom:8px}
+.lu-list{display:flex;flex-direction:column;flex:1}
+.lu-row{display:flex;align-items:center;gap:6px;padding:4px 0;border-bottom:1px solid #f5f3ef}
+.lu-pos{font-family:"Barlow Condensed",sans-serif;font-size:11px;color:#bbb;min-width:32px;font-weight:700}
+.lu-name{font-family:"Barlow Condensed",sans-serif;font-size:12px;font-weight:600}
+.lu-abbr{font-family:"Barlow Condensed",sans-serif;font-size:10px;color:#ccc;margin-left:auto}
+.conf-btn{font-family:"Barlow Condensed",sans-serif;font-size:14px;font-weight:800;text-transform:uppercase;padding:10px;background:#c0392b;color:#fff;border:none;border-radius:3px;cursor:pointer;margin-top:14px;width:100%}
+.conf-btn:disabled{opacity:.3;cursor:default}
+/* LIGA */
+#sLiga{background:#f0ede6}
+.liga-body{display:grid;grid-template-columns:1fr 300px;flex:1;gap:0;overflow:hidden}
+.liga-main{padding:20px 24px 40px;overflow-y:auto;display:flex;flex-direction:column;gap:0}
+.liga-sidebar{background:#fff;border-left:1px solid #ddd;padding:18px;overflow-y:auto;flex-shrink:0}
+/* Fecha blocks */
+.fecha-block{margin-bottom:6px}
+.fecha-hdr{display:flex;align-items:center;gap:10px;padding:10px 14px;background:#fff;border:1px solid #e0ddd6;border-radius:4px;cursor:pointer;user-select:none}
+.fecha-hdr:hover{background:#faf9f6}
+.fecha-tag{font-family:"Barlow Condensed",sans-serif;font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:#aaa;font-weight:700}
+.fecha-num{font-family:"Barlow Condensed",sans-serif;font-size:22px;font-weight:900;letter-spacing:-.5px}
+.fecha-result-tag{font-family:"Barlow Condensed",sans-serif;font-size:16px;font-weight:800;margin-left:auto;color:#888}
+.fecha-result-tag.win{color:#1a6b2e}.fecha-result-tag.loss{color:#c0392b}
+.fecha-toggle{font-size:11px;color:#bbb;margin-left:8px}
+.fecha-content{border:1px solid #e0ddd6;border-top:none;border-radius:0 0 4px 4px;background:#fff;overflow:hidden}
+/* Match card */
+.match-card{border-bottom:1px solid #f0ede6}
+.match-row{display:flex;align-items:center;gap:0;padding:11px 16px}
+.match-stage{font-family:"Barlow Condensed",sans-serif;font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:#aaa;min-width:56px;font-weight:700}
+.match-vs{font-family:"Barlow Condensed",sans-serif;font-size:11px;color:#aaa;margin-right:5px}
+.match-abbr{display:inline-block;font-family:"Barlow Condensed",sans-serif;font-size:10px;font-weight:800;background:#111;color:#fff;padding:1px 5px;border-radius:2px;margin-right:5px;letter-spacing:.04em}
+.match-name{font-family:"Barlow Condensed",sans-serif;font-size:18px;font-weight:800;flex:1;letter-spacing:-.3px}
+.match-score{font-family:"Barlow Condensed",sans-serif;font-size:20px;font-weight:900;letter-spacing:-.5px;margin-left:auto;min-width:52px;text-align:right}
+.match-score.win{color:#1a6b2e}.match-score.loss{color:#c0392b}
+.match-check{font-family:"Barlow Condensed",sans-serif;font-size:14px;font-weight:800;margin-left:6px;min-width:14px}
+.match-check.green{color:#1a6b2e}.match-check.red{color:#c0392b}
+/* Goal feed */
+.goal-feed{padding:6px 16px 10px 16px;display:flex;flex-direction:column;gap:3px;border-top:1px solid #f5f3ef}
+.goal-item{display:flex;align-items:center;gap:8px;font-size:12px;padding:2px 0}
+.goal-item.anim{animation:fi .25s ease}
+@keyframes fi{from{opacity:0;transform:translateY(3px)}to{opacity:1;transform:none}}
+.goal-min{font-family:"Barlow Condensed",sans-serif;font-weight:800;color:#aaa;min-width:28px;font-size:12px}
+.goal-dot{color:#888;font-size:10px}
+.goal-name{font-family:"Barlow Condensed",sans-serif;font-size:13px;font-weight:700}
+.goal-name.against{color:#c0392b}
+.goal-team-lbl{font-size:11px;color:#aaa;margin-left:4px}
+/* Other matches */
+.otros-section{padding:10px 16px 12px;background:#faf9f6;border-top:1px solid #f0ede6}
+.otros-label{font-family:"Barlow Condensed",sans-serif;font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:#bbb;margin-bottom:6px;font-weight:700}
+.other-list{display:flex;flex-direction:column;gap:2px}
+.other-row{display:flex;align-items:center;gap:6px;font-size:11px;padding:2px 0}
+.other-abbr{font-family:"Barlow Condensed",sans-serif;font-size:9px;font-weight:800;background:#ddd;color:#666;padding:1px 4px;border-radius:2px}
+.other-name{font-family:"Barlow Condensed",sans-serif;font-size:12px;font-weight:600;flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:120px}
+.other-score{font-family:"Barlow Condensed",sans-serif;font-size:13px;font-weight:900;min-width:32px;text-align:center}
+/* Prox btn */
+.prox-btn{font-family:"Barlow Condensed",sans-serif;font-size:16px;font-weight:800;letter-spacing:.05em;text-transform:uppercase;padding:14px 28px;background:#c0392b;color:#fff;border:none;border-radius:3px;cursor:pointer;margin-top:12px;align-self:flex-start;display:flex;align-items:center;gap:10px}
+.prox-btn:hover{background:#a02020}.prox-btn:disabled{opacity:.4;cursor:default}
+.prox-btn.mercado{background:#1a6b2e}.prox-btn.mercado:hover{background:#14521f}
+/* Sidebar tabla */
+.sid-title{font-family:"Barlow Condensed",sans-serif;font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:#aaa;margin-bottom:12px;font-weight:700}
+table.st{width:100%;border-collapse:collapse}
+table.st th{font-family:"Barlow Condensed",sans-serif;font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:#bbb;padding:4px 4px;text-align:left;border-bottom:1px solid #eee;font-weight:700}
+table.st th.n,table.st td.n{text-align:center}
+table.st td{padding:5px 4px;border-bottom:1px solid #f5f3ef;font-family:"Barlow Condensed",sans-serif;font-size:12px}
+table.st td.pts{font-weight:900;font-size:13px;text-align:center}
+table.st tr.me td{background:#fffbe6}
+table.st td.tnm{font-weight:600;font-size:11px;max-width:100px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.pos-num{color:#bbb;font-size:10px}
+/* MERCADO */
+#sMercado{background:#f0ede6}
+.mkt-info{padding:16px 20px;background:#fff;border-bottom:1px solid #ddd;display:flex;align-items:center;gap:16px}
+.mkt-title{font-family:"Barlow Condensed",sans-serif;font-size:20px;font-weight:900}
+.mkt-sub{font-size:13px;color:#777}
+.mkt-changes{font-family:"Barlow Condensed",sans-serif;font-size:14px;font-weight:800;color:#1a6b2e;margin-left:auto}
+.mkt-confirm{font-family:"Barlow Condensed",sans-serif;font-size:14px;font-weight:800;text-transform:uppercase;padding:8px 20px;background:#1a6b2e;color:#fff;border:none;border-radius:3px;cursor:pointer}
+/* FIN */
+#sFin{background:#f0ede6}
+.fw{padding:48px 44px;max-width:700px;margin:0 auto;display:flex;flex-direction:column;gap:16px}
+.fe{font-size:56px;margin-bottom:4px}
+.ft{font-family:"Barlow Condensed",sans-serif;font-size:52px;font-weight:900;line-height:.95;letter-spacing:-.5px}
+.fd{font-size:15px;color:#666;line-height:1.7;max-width:500px}
+.tcard{background:#fff;border:1px solid #e0ddd6;border-radius:4px;overflow:hidden}
+table.t{width:100%;border-collapse:collapse}
+table.t th{font-family:"Barlow Condensed",sans-serif;font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:#aaa;padding:8px 10px;border-bottom:1px solid #eee;text-align:left}
+table.t th.n,table.t td.n{text-align:center}
+table.t td{padding:8px 10px;border-bottom:1px solid #f5f3ef;font-family:"Barlow Condensed",sans-serif;font-size:14px}
+table.t td.pts{font-weight:900;font-size:16px;text-align:center}
+table.t tr.me td{background:#fffbe6}
+table.t td.tnm{font-weight:600}
+.next-btn{font-family:"Barlow Condensed",sans-serif;font-size:16px;font-weight:800;text-transform:uppercase;padding:12px 30px;background:#c0392b;color:#fff;border:none;border-radius:3px;cursor:pointer}
+</style>
+</head>
+<body>
+
+<!-- SETUP -->
+<div id="sSetup" class="screen active"><div class="sw">
+  <div class="ey">Pantalla inicial </div>
+  <div class="big-title">Juega<br>0a11 </div>
+  <div class="sub">Entonces elige la formaci&#243;n y draftea tu XI una sola vez. Luego juegas 30 fechas contra otros 15 equipos hist&#243;ricos.</div>
+  <div class="sec-lbl">Elige tu formaci&#243;n</div>
+  <div class="forma-grid" id="formaGrid"></div>
+  <button class="go-btn" id="goBtn" onclick="startDraft()" disabled>&#127922; &nbsp;Empezar draft</button>
+</div></div>
+
+<!-- DRAFT -->
+<div id="sDraft" class="screen">
+  <div class="topbar">
+    <div class="tb-logo">0a11</div>
+    <div class="tb-mid" id="tbMid">Draft &middot; Arma tu XI</div>
+    <div class="tb-right" id="tbForma">4-3-3</div>
+  </div>
+  <div class="game-cols">
+    <div class="pl">
+      <div class="salio">Sali&#243;</div>
+      <div style="margin-bottom:2px"><span class="t-abbr" id="tAbbr">CC</span><span class="t-name" id="tName">Colo-Colo</span></div>
+      <div class="t-year" id="tYear">1991</div>
+      <div class="t-desc" id="tDesc"></div>
+      <div class="rr-label" id="rrLabel">3 restantes</div>
+      <button class="rr-btn" id="rrBtn" onclick="reroll()">&#8635; Otro equipo</button>
+      <div class="pick-label">Elige un jugador</div>
+      <div id="pList"></div>
+    </div>
+    <div class="field-wrap">
+      <svg id="fieldSvg" viewBox="0 0 300 440" style="width:100%;height:100%;max-width:340px;max-height:580px" xmlns="http://www.w3.org/2000/svg">
+        <rect width="300" height="440" fill="#2d6a2d"/>
+        <rect x="0" y="0" width="300" height="55" fill="rgba(0,0,0,.05)"/>
+        <rect x="0" y="110" width="300" height="55" fill="rgba(0,0,0,.05)"/>
+        <rect x="0" y="220" width="300" height="55" fill="rgba(0,0,0,.05)"/>
+        <rect x="0" y="330" width="300" height="55" fill="rgba(0,0,0,.05)"/>
+        <rect x="16" y="14" width="268" height="412" fill="none" stroke="rgba(255,255,255,.4)" stroke-width="1.5"/>
+        <rect x="88" y="14" width="124" height="46" fill="none" stroke="rgba(255,255,255,.3)" stroke-width="1.5"/>
+        <rect x="88" y="380" width="124" height="46" fill="none" stroke="rgba(255,255,255,.3)" stroke-width="1.5"/>
+        <circle cx="150" cy="220" r="40" fill="none" stroke="rgba(255,255,255,.3)" stroke-width="1.5"/>
+        <circle cx="150" cy="220" r="3" fill="rgba(255,255,255,.45)"/>
+        <line x1="16" y1="220" x2="284" y2="220" stroke="rgba(255,255,255,.28)" stroke-width="1.5"/>
+        <g id="fieldSpots"></g>
+      </svg>
+    </div>
+    <div class="pr">
+      <div class="sc-label">Marcador</div><div class="sc-val" id="scVal">0/11</div>
+      <div class="bars">
+        <div class="bar-row"><div class="bar-hdr"><span class="bar-nm">Ataque</span><span class="bar-vl" id="bAtkV">--</span></div><div class="bar-track"><div class="bar-fill ba" id="bAtk" style="width:0%"></div></div></div>
+        <div class="bar-row"><div class="bar-hdr"><span class="bar-nm">Defensa</span><span class="bar-vl" id="bDefV">--</span></div><div class="bar-track"><div class="bar-fill bd" id="bDef" style="width:0%"></div></div></div>
+      </div>
+      <div class="lu-label">Formaci&#243;n</div>
+      <div class="lu-list" id="luList"></div>
+      <button class="conf-btn" id="confBtn" onclick="confirmDraft()" disabled>Confirmar XI y comenzar &rarr;</button>
+    </div>
+  </div>
+</div>
+
+<!-- MERCADO -->
+<div id="sMercado" class="screen">
+  <div class="topbar"><div class="tb-logo">7a0</div><div class="tb-mid">Mercado de pase &middot; Mitad de temporada</div></div>
+  <div class="mkt-info">
+    <div>
+      <div class="mkt-title">Mercado de pase</div>
+      <div class="mkt-sub">Reemplaz&#225; hasta 3 jugadores. Sale un equipo aleatorio, eleg&#237;s un jugador y click en qui&#233;n reemplaza en la cancha.</div>
+    </div>
+    <span class="mkt-changes" id="mktChanges">0/3 cambios</span>
+    <button class="mkt-confirm" onclick="confirmMercado()">Continuar &rarr;</button>
+  </div>
+  <div class="game-cols">
+    <div class="pl">
+      <div class="salio">Sali&#243;</div>
+      <div style="margin-bottom:2px"><span class="t-abbr" id="mktAbbr">CC</span><span class="t-name" id="mktName">Colo-Colo</span></div>
+      <div class="t-year" id="mktYear">1991</div>
+      <div class="t-desc" id="mktDesc"></div>
+      <div class="rr-label" id="mktRrLabel">3 restantes</div>
+      <button class="rr-btn" id="mktRrBtn" onclick="rerollMercado()">&#8635; Otro equipo</button>
+      <div class="pick-label">Elige un jugador para fichar</div>
+      <div id="mktPList"></div>
+    </div>
+    <div class="field-wrap">
+      <svg viewBox="0 0 300 440" style="width:100%;height:100%;max-width:340px;max-height:580px" xmlns="http://www.w3.org/2000/svg">
+        <rect width="300" height="440" fill="#2d6a2d"/>
+        <rect x="0" y="0" width="300" height="55" fill="rgba(0,0,0,.05)"/>
+        <rect x="0" y="110" width="300" height="55" fill="rgba(0,0,0,.05)"/>
+        <rect x="0" y="220" width="300" height="55" fill="rgba(0,0,0,.05)"/>
+        <rect x="0" y="330" width="300" height="55" fill="rgba(0,0,0,.05)"/>
+        <rect x="16" y="14" width="268" height="412" fill="none" stroke="rgba(255,255,255,.4)" stroke-width="1.5"/>
+        <rect x="88" y="14" width="124" height="46" fill="none" stroke="rgba(255,255,255,.3)" stroke-width="1.5"/>
+        <rect x="88" y="380" width="124" height="46" fill="none" stroke="rgba(255,255,255,.3)" stroke-width="1.5"/>
+        <circle cx="150" cy="220" r="40" fill="none" stroke="rgba(255,255,255,.3)" stroke-width="1.5"/>
+        <circle cx="150" cy="220" r="3" fill="rgba(255,255,255,.45)"/>
+        <line x1="16" y1="220" x2="284" y2="220" stroke="rgba(255,255,255,.28)" stroke-width="1.5"/>
+        <g id="mktFieldSpots"></g>
+      </svg>
+    </div>
+    <div class="pr">
+      <div class="lu-label">Tu XI actual</div>
+      <div class="lu-list" id="luList2"></div>
+    </div>
+  </div>
+</div>
+
+<!-- LIGA -->
+<div id="sLiga" class="screen">
+  <div class="topbar">
+    <div class="tb-logo">0a11</div>
+    <div class="tb-mid" id="ligaMid">La campa&#241;a &middot; Fecha 1 de 30</div>
+    <div class="tb-right" id="ligaInv"></div>
+  </div>
+  <div class="liga-body">
+    <div class="liga-main" id="ligaMain"></div>
+    <div class="liga-sidebar">
+      <div class="sid-title">Tabla de posiciones</div>
+      <table class="st"><thead><tr>
+        <th style="width:20px">#</th><th>Equipo</th>
+        <th class="n">PJ</th><th class="n">PTS</th><th class="n">DG</th>
+      </tr></thead><tbody id="sidTabla"></tbody></table>
+    </div>
+  </div>
+</div>
+
+<!-- FIN -->
+<div id="sFin" class="screen"><div class="fw">
+  <div class="fe" id="finEmo">&#127942;</div>
+  <div class="ft" id="finTit">Campeon!</div>
+  <div class="fd" id="finDesc"></div>
+  <div class="tcard" style="width:100%">
+    <table class="t"><thead><tr>
+      <th style="width:24px">#</th><th>Equipo</th>
+      <th class="n">PJ</th><th class="n">PTS</th><th class="n">DG</th><th class="n">GF</th>
+    </tr></thead><tbody id="finTbl"></tbody></table>
+  </div>
+  <button class="next-btn" onclick="resetGame()">&#8635; Nueva temporada</button>
+</div></div>
+
+<script>
+var TEAMS=[
+  {id:"cc73",abbr:"CC",name:"Colo-Colo",year:"1973",desc:"Subcampeon de America. Caszely y Chamaco Valdes en su esplendor.",players:[{num:1,name:"Adolfo Nef",pos:["ARQ"],rat:88},{num:2,name:"Mario Galindo",pos:["LD"],rat:82},{num:3,name:"Leonel Herrera",pos:["DFC"],rat:85},{num:4,name:"Rafael Gonzalez",pos:["DFC"],rat:83},{num:5,name:"Alejandro Silva",pos:["LI"],rat:78},{num:6,name:"Guillermo Paez",pos:["VOL","MC"],rat:82},{num:7,name:"Carlos Caszely",pos:["ED","DC"],rat:90},{num:8,name:"Francisco Valdes",pos:["MC","VOL"],rat:89},{num:9,name:"Sergio Messen",pos:["DC"],rat:82},{num:10,name:"Sergio Ahumada",pos:["EI","DC"],rat:84},{num:11,name:"Leonardo Veliz",pos:["EI"],rat:83}]},
+  {id:"ud69",abbr:"UD",name:"U. de Chile",year:"1969",desc:"El fin del Ballet Azul. Ultimo titulo de la generacion mas gloriosa.",players:[{num:1,name:"Manuel Astorga",pos:["ARQ"],rat:82},{num:2,name:"Nelson Gallardo",pos:["LD"],rat:76},{num:3,name:"Humberto Donoso",pos:["DFC"],rat:84},{num:4,name:"Alberto Quintano",pos:["DFC"],rat:88},{num:5,name:"Juan Rodriguez",pos:["LI"],rat:80},{num:6,name:"Roberto Hodge",pos:["VOL","MC"],rat:83},{num:7,name:"Ruben Marcos",pos:["MC","VOL"],rat:86},{num:8,name:"Pedro Araya",pos:["ED"],rat:85},{num:9,name:"Guillermo Yavar",pos:["MC","DC"],rat:82},{num:10,name:"Jorge Americo Spedaletti",pos:["DC"],rat:84},{num:11,name:"Leonel Sanchez",pos:["EI"],rat:89}]},
+  {id:"cc91",abbr:"CC",name:"Colo-Colo",year:"1991",desc:"Campeon de America 1991. El hito mas grande del club.",players:[{num:1,name:"Daniel Moron",pos:["ARQ"],rat:85},{num:2,name:"Lizardo Garrido",pos:["DFC"],rat:86},{num:3,name:"Miguel Ramirez",pos:["DFC"],rat:83},{num:4,name:"Javier Margas",pos:["DFC"],rat:84},{num:5,name:"Eduardo Vilches",pos:["VOL","DFC"],rat:84},{num:6,name:"Jaime Pizarro",pos:["VOL","MC"],rat:86},{num:7,name:"Gabriel Mendoza",pos:["LD","ED"],rat:85},{num:8,name:"Marcelo Barticciotto",pos:["ED","EI"],rat:87},{num:9,name:"Ricardo Dabrowski",pos:["DC"],rat:82},{num:10,name:"Patricio Yanez",pos:["ED"],rat:84},{num:11,name:"Luis Perez",pos:["EI","DC"],rat:81}]},
+  {id:"cc06",abbr:"CC",name:"Colo-Colo",year:"2006",desc:"Finalista de Sudamericana y Bicampeon con Borghi. Matias, Valdivia y Suazo.",players:[{num:1,name:"Claudio Bravo",pos:["ARQ"],rat:84},{num:2,name:"Alvaro Ormeno",pos:["LD"],rat:78},{num:3,name:"Luis Mena",pos:["DFC"],rat:76},{num:4,name:"David Henriquez",pos:["DFC"],rat:79},{num:5,name:"Arturo Vidal",pos:["LI","DFC","VOL"],rat:82},{num:6,name:"Rodrigo Melendez",pos:["VOL"],rat:80},{num:7,name:"Gonzalo Fierro",pos:["ED","LD"],rat:81},{num:8,name:"Matias Fernandez",pos:["MC"],rat:89},{num:9,name:"Humberto Suazo",pos:["DC"],rat:88},{num:10,name:"Jorge Valdivia",pos:["MC"],rat:87},{num:11,name:"Alexis Sanchez",pos:["EI","ED"],rat:81}]},
+  {id:"ud11",abbr:"UD",name:"U. de Chile",year:"2011",desc:"Campeon de la Sudamericana invicto. El ballet de Sampaoli.",players:[{num:1,name:"Johnny Herrera",pos:["ARQ"],rat:86},{num:2,name:"Matias Rodriguez",pos:["LD","ED"],rat:83},{num:3,name:"Osvaldo Gonzalez",pos:["DFC"],rat:82},{num:4,name:"Marcos Gonzalez",pos:["DFC"],rat:83},{num:5,name:"Jose Rojas",pos:["LI","DFC"],rat:81},{num:6,name:"Marcelo Diaz",pos:["VOL","MC"],rat:85},{num:7,name:"Charles Aranguiz",pos:["MC","VOL"],rat:86},{num:8,name:"Gustavo Lorenzetti",pos:["MC"],rat:82},{num:9,name:"Eduardo Vargas",pos:["ED","DC"],rat:89},{num:10,name:"Gustavo Canales",pos:["DC"],rat:83},{num:11,name:"Francisco Castro",pos:["EI"],rat:76}]},
+  {id:"uc94",abbr:"UC",name:"U. Catolica",year:"1994",desc:"Subcampeon con Pellegrini. Gorosito y Acosta, dupla letal.",players:[{num:1,name:"Patricio Toledo",pos:["ARQ"],rat:81},{num:2,name:"Andres Romero",pos:["LD"],rat:76},{num:3,name:"Sergio Vazquez",pos:["DFC"],rat:83},{num:4,name:"Daniel Lopez",pos:["DFC"],rat:75},{num:5,name:"Raimundo Tupper",pos:["LI","LD"],rat:80},{num:6,name:"Mario Lepe",pos:["VOL"],rat:82},{num:7,name:"Nelson Parraguez",pos:["VOL","MC"],rat:80},{num:8,name:"Jorge Vazquez",pos:["MC"],rat:77},{num:9,name:"Rodrigo Barrera",pos:["ED","DC"],rat:81},{num:10,name:"Nestor Gorosito",pos:["MC"],rat:88},{num:11,name:"Alberto Acosta",pos:["DC"],rat:87}]},
+  {id:"ucte",abbr:"UC",name:"U. Catolica",year:"2022",desc:"Historico Tetracampeonato 2018-2022. Zampedri y Fuenzalida.",players:[{num:1,name:"Matias Dituro",pos:["ARQ"],rat:83},{num:2,name:"Jose Pedro Fuenzalida",pos:["LD","ED"],rat:81},{num:3,name:"German Lanaro",pos:["DFC"],rat:77},{num:4,name:"Valber Huerta",pos:["DFC"],rat:80},{num:5,name:"Alfonso Parot",pos:["LI"],rat:76},{num:6,name:"Ignacio Saavedra",pos:["VOL"],rat:77},{num:7,name:"Marcelino Nunez",pos:["MC"],rat:80},{num:8,name:"Luciano Aued",pos:["MC","VOL"],rat:79},{num:9,name:"Diego Valencia",pos:["ED","DC"],rat:77},{num:10,name:"Fernando Zampedri",pos:["DC"],rat:84},{num:11,name:"Edson Puch",pos:["EI"],rat:80}]},
+  {id:"cob81",abbr:"COB",name:"Cobreloa",year:"1981",desc:"Finalista de Copa Libertadores. El gigante del norte de Vicente Cantatore.",players:[{num:1,name:"Oscar Wirth",pos:["ARQ"],rat:82},{num:2,name:"Hugo Tabilo",pos:["LD"],rat:78},{num:3,name:"Juan Jacovenko",pos:["DFC"],rat:77},{num:4,name:"Mario Soto",pos:["DFC"],rat:85},{num:5,name:"Enzo Escobar",pos:["LI"],rat:81},{num:6,name:"Armando Alarcon",pos:["VOL"],rat:79},{num:7,name:"Victor Merello",pos:["MC","VOL"],rat:83},{num:8,name:"Ruben Gomez",pos:["MC"],rat:78},{num:9,name:"Jorge Luis Siviero",pos:["DC"],rat:82},{num:10,name:"Hector Puebla",pos:["VOL","LI","ED"],rat:83},{num:11,name:"Washington Olivera",pos:["EI"],rat:81}]},
+  {id:"ue75",abbr:"UE",name:"Union Espanola",year:"1975",desc:"Finalista de Copa Libertadores y Campeon Nacional. El equipazo de Luis Santibanez.",players:[{num:1,name:"Leopoldo Vallejos",pos:["ARQ"],rat:81},{num:2,name:"Juan Machuca",pos:["LD"],rat:82},{num:3,name:"Hugo Berly",pos:["DFC"],rat:79},{num:4,name:"Mario Soto",pos:["DFC"],rat:81},{num:5,name:"Antonio Arias",pos:["LI"],rat:83},{num:6,name:"Alfonso Lara",pos:["VOL"],rat:80},{num:7,name:"Francisco Las Heras",pos:["MC"],rat:79},{num:8,name:"Alejandro Trujillo",pos:["DC"],rat:80},{num:9,name:"Sergio Ahumada",pos:["ED","DC"],rat:82},{num:10,name:"Jorge Spedaletti",pos:["DC"],rat:83},{num:11,name:"Leonardo Veliz",pos:["EI"],rat:82}]},
+  {id:"ud94",abbr:"UD",name:"U. de Chile",year:"1994",desc:"Campeon tras 25 anos de sequia. Marcelo Salas nace como mito.",players:[{num:1,name:"Sergio Vargas",pos:["ARQ"],rat:86},{num:2,name:"Cristian Castaneda",pos:["LD"],rat:79},{num:3,name:"Ronald Fuentes",pos:["DFC"],rat:82},{num:4,name:"Rogelio Delgado",pos:["DFC"],rat:83},{num:5,name:"Fabian Guevara",pos:["LI"],rat:78},{num:6,name:"Luis Musrri",pos:["VOL"],rat:82},{num:7,name:"Patricio Mardones",pos:["MC"],rat:81},{num:8,name:"Esteban Valencia",pos:["MC"],rat:82},{num:9,name:"Juan Carlos Ibanez",pos:["DC"],rat:80},{num:10,name:"Raul Aredes",pos:["MC"],rat:81},{num:11,name:"Marcelo Salas",pos:["DC","EI"],rat:88}]},
+  {id:"uc10",abbr:"UC",name:"U. Catolica",year:"2010",desc:"Campeon del Bicentenario remontando 7 puntos. Pizzi DT y Lucas Pratto.",players:[{num:1,name:"Cristopher Toselli",pos:["ARQ"],rat:78},{num:2,name:"Rodrigo Valenzuela",pos:["LD"],rat:77},{num:3,name:"Marcos Gonzalez",pos:["DFC"],rat:80},{num:4,name:"David Henriquez",pos:["DFC"],rat:77},{num:5,name:"Juan Eluchans",pos:["LI"],rat:76},{num:6,name:"Jorge Ormeno",pos:["VOL"],rat:79},{num:7,name:"Milovan Mirosevic",pos:["MC"],rat:82},{num:8,name:"Fernando Meneses",pos:["ED"],rat:78},{num:9,name:"Dario Bottinelli",pos:["MC"],rat:81},{num:10,name:"Lucas Pratto",pos:["DC"],rat:82},{num:11,name:"Roberto Gutierrez",pos:["DC"],rat:80}]},
+  {id:"ai07",abbr:"AI",name:"Audax Italiano",year:"2007",desc:"Campanon en Libertadores y torneo local con Raul Toro. Villanueva descollante.",players:[{num:1,name:"Nicolas Peric",pos:["ARQ"],rat:80},{num:2,name:"Boris Rieloff",pos:["LD"],rat:78},{num:3,name:"Jorge Carrasco",pos:["DFC"],rat:75},{num:4,name:"Juan Gonzalez",pos:["DFC"],rat:74},{num:5,name:"Roberto Cereceda",pos:["LI"],rat:77},{num:6,name:"Braulio Leal",pos:["VOL"],rat:76},{num:7,name:"Miguel Angel Romero",pos:["MC"],rat:75},{num:8,name:"Carlos Villanueva",pos:["MC"],rat:84},{num:9,name:"Rodolfo Moya",pos:["ED"],rat:77},{num:10,name:"Leonardo Medina",pos:["DC"],rat:76},{num:11,name:"Franco Di Santo",pos:["DC"],rat:78}]},
+  {id:"oh13",abbr:"OH",name:"O'Higgins",year:"2013",desc:"Primer titulo en la historia de Rancagua, de la mano de Eduardo Berizzo.",players:[{num:1,name:"Paulo Garces",pos:["ARQ"],rat:79},{num:2,name:"Yerson Opazo",pos:["LD"],rat:77},{num:3,name:"Mariano Uglessich",pos:["DFC"],rat:76},{num:4,name:"Julio Barroso",pos:["DFC"],rat:82},{num:5,name:"Alejandro Lopez",pos:["LI"],rat:74},{num:6,name:"Cesar Fuentes",pos:["VOL"],rat:76},{num:7,name:"Braulio Leal",pos:["MC","VOL"],rat:78},{num:8,name:"Pedro Pablo Hernandez",pos:["MC"],rat:82},{num:9,name:"Luis Pedro Figueroa",pos:["ED"],rat:78},{num:10,name:"Pablo Calandria",pos:["DC"],rat:80},{num:11,name:"Gonzalo Barriga",pos:["EI"],rat:76}]},
+  {id:"nub22",abbr:"NB",name:"Nublense",year:"2022",desc:"Historico subcampeonato y clasificacion a Libertadores con Jaime Garcia.",players:[{num:1,name:"Nicola Perez",pos:["ARQ"],rat:79},{num:2,name:"Bernardo Cerezo",pos:["LD"],rat:75},{num:3,name:"Nicolas Vargas",pos:["DFC"],rat:76},{num:4,name:"Rafael Caroca",pos:["DFC","VOL"],rat:76},{num:5,name:"Jovany Campusano",pos:["LI"],rat:75},{num:6,name:"Lorenzo Reyes",pos:["VOL"],rat:78},{num:7,name:"Federico Mateos",pos:["MC"],rat:79},{num:8,name:"Manuel Rivera",pos:["MC"],rat:74},{num:9,name:"Alexander Aravena",pos:["ED","DC"],rat:78},{num:10,name:"Nicolas Guerra",pos:["DC"],rat:76},{num:11,name:"Patricio Rubio",pos:["EI","DC"],rat:77}]},
+  {id:"uc16",abbr:"UC",name:"U. Catolica",year:"16",desc:"Primer Bicampeonato de la franja (Clausura-Apertura). Comandados por Mario Salas.",players:[{num:1,name:"Cristopher Toselli",pos:["ARQ"],rat:80},{num:2,name:"Stefano Magnasco",pos:["LD"],rat:75},{num:3,name:"German Lanaro",pos:["DFC"],rat:77},{num:4,name:"Guillermo Maripan",pos:["DFC"],rat:79},{num:5,name:"Alfonso Parot",pos:["LI"],rat:76},{num:6,name:"Cesar Fuentes",pos:["VOL"],rat:76},{num:7,name:"Enzo Kalinski",pos:["MC","VOL"],rat:78},{num:8,name:"Diego Buonanotte",pos:["MC"],rat:83},{num:9,name:"Jose Pedro Fuenzalida",pos:["ED"],rat:81},{num:10,name:"Nicolas Castillo",pos:["DC"],rat:85},{num:11,name:"Ricardo Noir",pos:["EI"],rat:76}]},
+  {id:"ud10",abbr:"UD",name:"U. de Chile",year:"2010",desc:"Semifinalistas de Copa Libertadores con Pelusso. Montillo figura.",players:[{num:1,name:"Miguel Pinto",pos:["ARQ"],rat:81},{num:2,name:"Matias Rodriguez",pos:["LD"],rat:78},{num:3,name:"Mauricio Victorino",pos:["DFC"],rat:82},{num:4,name:"Rafael Olarra",pos:["DFC"],rat:79},{num:5,name:"Jose Rojas",pos:["LI"],rat:78},{num:6,name:"Felipe Seymour",pos:["VOL"],rat:78},{num:7,name:"Manuel Iturra",pos:["VOL","MC"],rat:79},{num:8,name:"Walter Montillo",pos:["MC"],rat:85},{num:9,name:"Eduardo Vargas",pos:["ED"],rat:77},{num:10,name:"Juan Manuel Olivera",pos:["DC"],rat:82},{num:11,name:"Edson Puch",pos:["EI"],rat:79}]}
+];
+
+var SCHEDULE=[[[0, 1], [2, 14], [3, 13], [4, 12], [5, 11], [6, 10], [7, 9], [8, 8]], [[0, 15], [1, 13], [2, 12], [3, 11], [4, 10], [5, 9], [6, 8], [7, 7]], [[0, 14], [15, 12], [1, 11], [2, 10], [3, 9], [4, 8], [5, 7], [6, 6]], [[0, 13], [14, 11], [15, 10], [1, 9], [2, 8], [3, 7], [4, 6], [5, 5]], [[0, 12], [13, 10], [14, 9], [15, 8], [1, 7], [2, 6], [3, 5], [4, 4]], [[0, 11], [12, 9], [13, 8], [14, 7], [15, 6], [1, 5], [2, 4], [3, 3]], [[0, 10], [11, 8], [12, 7], [13, 6], [14, 5], [15, 4], [1, 3], [2, 2]], [[0, 9], [10, 7], [11, 6], [12, 5], [13, 4], [14, 3], [15, 2], [1, 1]], [[0, 8], [9, 6], [10, 5], [11, 4], [12, 3], [13, 2], [14, 1], [15, 15]], [[0, 7], [8, 5], [9, 4], [10, 3], [11, 2], [12, 1], [13, 15], [14, 14]], [[0, 6], [7, 4], [8, 3], [9, 2], [10, 1], [11, 15], [12, 14], [13, 13]], [[0, 5], [6, 3], [7, 2], [8, 1], [9, 15], [10, 14], [11, 13], [12, 12]], [[0, 4], [5, 2], [6, 1], [7, 15], [8, 14], [9, 13], [10, 12], [11, 11]], [[0, 3], [4, 1], [5, 15], [6, 14], [7, 13], [8, 12], [9, 11], [10, 10]], [[0, 2], [3, 15], [4, 14], [5, 13], [6, 12], [7, 11], [8, 10], [9, 9]], [[1, 0], [14, 2], [13, 3], [12, 4], [11, 5], [10, 6], [9, 7], [8, 8]], [[15, 0], [13, 1], [12, 2], [11, 3], [10, 4], [9, 5], [8, 6], [7, 7]], [[14, 0], [12, 15], [11, 1], [10, 2], [9, 3], [8, 4], [7, 5], [6, 6]], [[13, 0], [11, 14], [10, 15], [9, 1], [8, 2], [7, 3], [6, 4], [5, 5]], [[12, 0], [10, 13], [9, 14], [8, 15], [7, 1], [6, 2], [5, 3], [4, 4]], [[11, 0], [9, 12], [8, 13], [7, 14], [6, 15], [5, 1], [4, 2], [3, 3]], [[10, 0], [8, 11], [7, 12], [6, 13], [5, 14], [4, 15], [3, 1], [2, 2]], [[9, 0], [7, 10], [6, 11], [5, 12], [4, 13], [3, 14], [2, 15], [1, 1]], [[8, 0], [6, 9], [5, 10], [4, 11], [3, 12], [2, 13], [1, 14], [15, 15]], [[7, 0], [5, 8], [4, 9], [3, 10], [2, 11], [1, 12], [15, 13], [14, 14]], [[6, 0], [4, 7], [3, 8], [2, 9], [1, 10], [15, 11], [14, 12], [13, 13]], [[5, 0], [3, 6], [2, 7], [1, 8], [15, 9], [14, 10], [13, 11], [12, 12]], [[4, 0], [2, 5], [1, 6], [15, 7], [14, 8], [13, 9], [12, 10], [11, 11]], [[3, 0], [1, 4], [15, 5], [14, 6], [13, 7], [12, 8], [11, 9], [10, 10]], [[2, 0], [15, 3], [14, 4], [13, 5], [12, 6], [11, 7], [10, 8], [9, 9]]];
+
+var FORMATIONS={
+  "4-3-3":[{pos:"ARQ",grp:"DEF",x:150,y:405},{pos:"LD",grp:"DEF",x:252,y:330},{pos:"DFC",grp:"DEF",x:194,y:342},{pos:"DFC",grp:"DEF",x:106,y:342},{pos:"LI",grp:"DEF",x:48,y:330},{pos:"MC",grp:"MED",x:222,y:232},{pos:"VOL",grp:"MED",x:150,y:222},{pos:"MC",grp:"MED",x:78,y:232},{pos:"ED",grp:"ATA",x:238,y:122},{pos:"DC",grp:"ATA",x:150,y:108},{pos:"EI",grp:"ATA",x:62,y:122}],
+  "4-4-2":[{pos:"ARQ",grp:"DEF",x:150,y:405},{pos:"LD",grp:"DEF",x:252,y:330},{pos:"DFC",grp:"DEF",x:194,y:342},{pos:"DFC",grp:"DEF",x:106,y:342},{pos:"LI",grp:"DEF",x:48,y:330},{pos:"ED",grp:"MED",x:248,y:232},{pos:"MC",grp:"MED",x:186,y:224},{pos:"MC",grp:"MED",x:114,y:224},{pos:"EI",grp:"MED",x:52,y:232},{pos:"DC",grp:"ATA",x:188,y:118},{pos:"DC",grp:"ATA",x:112,y:118}],
+  "4-2-3-1":[{pos:"ARQ",grp:"DEF",x:150,y:405},{pos:"LD",grp:"DEF",x:252,y:332},{pos:"DFC",grp:"DEF",x:194,y:344},{pos:"DFC",grp:"DEF",x:106,y:344},{pos:"LI",grp:"DEF",x:48,y:332},{pos:"VOL",grp:"MED",x:194,y:262},{pos:"VOL",grp:"MED",x:106,y:262},{pos:"ED",grp:"MED",x:240,y:182},{pos:"MC",grp:"MED",x:150,y:174},{pos:"EI",grp:"MED",x:60,y:182},{pos:"DC",grp:"ATA",x:150,y:98}],
+  "3-5-2":[{pos:"ARQ",grp:"DEF",x:150,y:405},{pos:"DFC",grp:"DEF",x:214,y:336},{pos:"DFC",grp:"DEF",x:150,y:346},{pos:"DFC",grp:"DEF",x:86,y:336},{pos:"LD",grp:"MED",x:264,y:236},{pos:"MC",grp:"MED",x:208,y:226},{pos:"VOL",grp:"MED",x:150,y:219},{pos:"MC",grp:"MED",x:92,y:226},{pos:"LI",grp:"MED",x:36,y:236},{pos:"DC",grp:"ATA",x:188,y:116},{pos:"DC",grp:"ATA",x:112,y:116}],
+  "5-3-2":[{pos:"ARQ",grp:"DEF",x:150,y:405},{pos:"LD",grp:"DEF",x:266,y:322},{pos:"DFC",grp:"DEF",x:212,y:338},{pos:"DFC",grp:"DEF",x:150,y:346},{pos:"DFC",grp:"DEF",x:88,y:338},{pos:"LI",grp:"DEF",x:34,y:322},{pos:"MC",grp:"MED",x:214,y:226},{pos:"VOL",grp:"MED",x:150,y:216},{pos:"MC",grp:"MED",x:86,y:226},{pos:"DC",grp:"ATA",x:188,y:116},{pos:"DC",grp:"ATA",x:112,y:116}],
+  "3-4-3":[{pos:"ARQ",grp:"DEF",x:150,y:405},{pos:"DFC",grp:"DEF",x:214,y:336},{pos:"DFC",grp:"DEF",x:150,y:346},{pos:"DFC",grp:"DEF",x:86,y:336},{pos:"LD",grp:"MED",x:252,y:232},{pos:"MC",grp:"MED",x:192,y:222},{pos:"MC",grp:"MED",x:108,y:222},{pos:"LI",grp:"MED",x:48,y:232},{pos:"ED",grp:"ATA",x:238,y:118},{pos:"DC",grp:"ATA",x:150,y:104},{pos:"EI",grp:"ATA",x:62,y:118}],
+  "4-2-4":[{pos:"ARQ",grp:"DEF",x:150,y:405},{pos:"LD",grp:"DEF",x:252,y:334},{pos:"DFC",grp:"DEF",x:194,y:346},{pos:"DFC",grp:"DEF",x:106,y:346},{pos:"LI",grp:"DEF",x:48,y:334},{pos:"VOL",grp:"MED",x:194,y:242},{pos:"VOL",grp:"MED",x:106,y:242},{pos:"ED",grp:"ATA",x:248,y:120},{pos:"DC",grp:"ATA",x:188,y:106},{pos:"DC",grp:"ATA",x:112,y:106},{pos:"EI",grp:"ATA",x:52,y:120}],
+  "4-5-1":[{pos:"ARQ",grp:"DEF",x:150,y:405},{pos:"LD",grp:"DEF",x:252,y:334},{pos:"DFC",grp:"DEF",x:194,y:346},{pos:"DFC",grp:"DEF",x:106,y:346},{pos:"LI",grp:"DEF",x:48,y:334},{pos:"ED",grp:"MED",x:256,y:228},{pos:"MC",grp:"MED",x:202,y:218},{pos:"VOL",grp:"MED",x:150,y:213},{pos:"MC",grp:"MED",x:98,y:218},{pos:"EI",grp:"MED",x:44,y:228},{pos:"DC",grp:"ATA",x:150,y:102}]
+};
+
+var G={};
+function $(id){return document.getElementById(id);}
+function show(id){document.querySelectorAll('.screen').forEach(function(s){s.classList.remove('active');});$(id).classList.add('active');}
+function shuffle(a){return[].concat(a).sort(function(){return Math.random()-.5;});}
+function rnd(mn,mx){return mn+Math.floor(Math.random()*(mx-mn+1));}
+function teamRat(t){return Math.round(t.players.reduce(function(s,p){return s+p.rat;},0)/t.players.length);}
+function leagueRat(li){return li.id==='_me'?G.myRat:li.rat;}
+
+// ── SETUP ────────────────────────────────────────────────────────────────────
+Object.keys(FORMATIONS).forEach(function(f){
+  var b=document.createElement('button');
+  b.className='fbtn';b.textContent=f;
+  b.onclick=function(){
+    G.formation=f;
+    document.querySelectorAll('.fbtn').forEach(function(x){x.classList.toggle('sel',x.textContent===f);});
+    $('goBtn').disabled=false;
+  };
+  $('formaGrid').appendChild(b);
+});
+
+// ── START ────────────────────────────────────────────────────────────────────
+function startDraft(){
+  G.spots=FORMATIONS[G.formation];
+  G.lineup=new Array(G.spots.length).fill(null);
+  G.rerolls=3; G.usedTeams=new Set(); G.selPlayer=null;
+  G.leagueTeams=shuffle(TEAMS).slice(0,15);
+  G.league=[{id:'_me',name:'Tu equipo',rat:0,pts:0,gf:0,gc:0,pg:0,pe:0,pp:0}]
+    .concat(G.leagueTeams.map(function(t){return{id:t.id,name:t.name+' '+t.year,rat:teamRat(t),pts:0,gf:0,gc:0,pg:0,pe:0,pp:0};}));
+  G.fecha=0; G.invicto=true; G.allFechaBlocks=[];
+  G.mercadoDone=false; G.mercadoChanges=0;
+  $('tbForma').textContent=G.formation;
+  show('sDraft');
+  rollTeam();
+}
+
+// ── DRAFT helpers ────────────────────────────────────────────────────────────
+function rollTeam(isMercado){
+  var pool=TEAMS.filter(function(t){return !G.usedTeams.has(t.id);});
+  if(!pool.length){G.usedTeams.clear();pool=TEAMS.slice();}
+  G.team=pool[Math.floor(Math.random()*pool.length)];
+  G.selPlayer=null;
+  if(isMercado){renderMercadoLeft();renderMercadoField();}
+  else{renderLeft();renderField();renderRight();}
+}
+function reroll(){if(G.rerolls<=0)return;G.rerolls--;rollTeam();}
+function rerollMercado(){if(G.rerolls<=0)return;G.rerolls--;rollTeam(true);}
+
+function renderLeft(){
+  var t=G.team;
+  $('tAbbr').textContent=t.abbr;$('tName').textContent=t.name;
+  $('tYear').textContent=t.year;$('tDesc').textContent=t.desc;
+  var r=G.rerolls;
+  $('rrLabel').textContent=r>0?'No te convence? \xb7 '+r+' restante'+(r!==1?'s':''):'Sin sorteos disponibles';
+  $('rrBtn').disabled=r<=0;
+  var sorted=[].concat(t.players).sort(function(a,b){return b.rat-a.rat;});
+  $('pList').innerHTML=sorted.map(function(p){
+    var oi=t.players.indexOf(p);
+    var hasRoom=G.spots.some(function(s,si){return !G.lineup[si]&&p.pos.indexOf(s.pos)>=0;});
+    return '<div class="prow'+(G.selPlayer===oi?' psel':'')+(hasRoom?'':' pdone')+'" onclick="pickPlayer('+oi+')">'
+      +'<span class="p-num">#'+p.num+'</span><span class="p-name">'+p.name+'</span>'
+      +'<span class="p-pos">'+p.pos.join('/')+'</span>'
+      +'<span class="p-rat'+(p.rat>=85?' gold':'')+'">'+p.rat+'</span></div>';
+  }).join('');
+}
+function pickPlayer(idx){G.selPlayer=idx;renderLeft();renderField();}
+
+function renderFieldSVG(spotsFn,lineupFn,selPosFn,clickFn,svgId){
+  var spots=spotsFn(),lineup=lineupFn(),selPos=selPosFn();
+  var hasSel=selPos!==null;
+  var html='';
+  spots.forEach(function(s,i){
+    var slot=lineup[i],filled=!!slot;
+    var valid=hasSel&&!filled&&selPos.indexOf(s.pos)>=0;
+    var dim=hasSel&&!filled&&selPos.indexOf(s.pos)<0;
+    var label=filled?slot.player.name.split(' ').pop():s.pos;
+    var fs=filled?9:11;
+    var fill=filled?'rgba(255,255,255,1)':'none';
+    var stroke=filled?'rgba(255,255,255,1)':valid?'rgba(100,230,100,.95)':dim?'rgba(255,255,255,.12)':'rgba(255,255,255,.5)';
+    var sw=valid?2.5:1.5,dash=filled?'':'5 3';
+    var tc=filled?'#1a3a1a':dim?'rgba(255,255,255,.18)':'rgba(255,255,255,.95)';
+    var ty=s.y+(filled?4:fs/2);
+    var inner=filled?'<text x="'+s.x+'" y="'+(s.y-5)+'" text-anchor="middle" font-size="6" font-family="Barlow Condensed,sans-serif" fill="#3a5c3a" font-weight="800">'+slot.abbr+'</text>':'';
+    inner+='<text x="'+s.x+'" y="'+ty+'" text-anchor="middle" font-size="'+fs+'" font-family="Barlow Condensed,sans-serif" fill="'+tc+'" font-weight="800">'+label+'</text>';
+    html+='<g onclick="'+clickFn+'('+i+')" style="cursor:'+(valid?'pointer':'default')+'">'
+      +'<circle cx="'+s.x+'" cy="'+s.y+'" r="20" fill="'+fill+'" stroke="'+stroke+'" stroke-width="'+sw+'"'+(dash?' stroke-dasharray="'+dash+'"':'')+'/>'
+      +inner+'</g>';
+  });
+  $(svgId).innerHTML=html;
+}
+
+function renderField(){
+  renderFieldSVG(
+    function(){return G.spots;},
+    function(){return G.lineup;},
+    function(){return G.selPlayer!==null?G.team.players[G.selPlayer].pos:null;},
+    'placePlayer','fieldSpots');
+}
+function placePlayer(i){
+  if(G.selPlayer===null||G.lineup[i])return;
+  var p=G.team.players[G.selPlayer];
+  if(p.pos.indexOf(G.spots[i].pos)<0)return;
+  G.lineup[i]={player:p,abbr:G.team.abbr,teamName:G.team.name,teamYear:G.team.year};
+  G.usedTeams.add(G.team.id);
+  G.selPlayer=null;
+  var filled=G.lineup.filter(Boolean).length;
+  $('confBtn').disabled=filled<G.spots.length;
+  renderRight();renderField();renderLeft();
+  if(filled<G.spots.length)rollTeam();
+}
+function renderRight(){
+  var filled=G.lineup.filter(Boolean).length;
+  $('scVal').textContent=filled+'/11';
+  var atk=0,atkN=0,def=0,defN=0;
+  G.lineup.forEach(function(sl,i){
+    if(!sl)return;
+    if(G.spots[i].grp==='ATA'){atk+=sl.player.rat;atkN++;}
+    else if(G.spots[i].grp==='DEF'){def+=sl.player.rat;defN++;}
+  });
+  function pct(v){return Math.max(0,Math.min(100,Math.round((v-65)/28*100)));}
+  $('bAtk').style.width=(atkN?pct(atk/atkN):0)+'%';$('bDef').style.width=(defN?pct(def/defN):0)+'%';
+  $('bAtkV').textContent=atkN?Math.round(atk/atkN):'--';$('bDefV').textContent=defN?Math.round(def/defN):'--';
+  $('luList').innerHTML=G.spots.map(function(s,i){
+    var sl=G.lineup[i];
+    return '<div class="lu-row"><span class="lu-pos">'+s.pos+'</span>'
+      +(sl?'<span class="lu-name">'+sl.player.name.split(' ').pop()+'</span><span class="lu-abbr">'+sl.abbr+'</span>':'<span style="color:#ddd">--</span>')+'</div>';
+  }).join('');
+}
+function confirmDraft(){
+  G.myRat=Math.round(G.lineup.reduce(function(s,sl){return s+(sl?sl.player.rat:70);},0)/G.spots.length);
+  G.myNames=G.lineup.filter(Boolean).map(function(sl){return sl.player.name.split(' ').pop();});
+  G.league[0].rat=G.myRat;
+  show('sLiga');
+  processNextFecha();
+}
+
+// ── LIGA ─────────────────────────────────────────────────────────────────────
+function simResult(ratA,ratB){
+  var diff=(ratA-ratB)/8;
+  var pW=Math.min(.78,Math.max(.14,.46+diff*.04));
+  var r=Math.random(),gA,gB;
+  if(r<pW){gA=rnd(1,3);gB=rnd(0,gA-1);}
+  else if(r<pW+.21){gA=rnd(0,2);gB=gA;}
+  else{gB=rnd(1,3);gA=rnd(0,gB-1);}
+  return[gA,gB];
+}
+function buildGoals(gA,gB,nA,nB){
+  var evs=[],mins=[],total=gA+gB;
+  for(var i=0;i<total;i++){var m=rnd(1,90);while(mins.indexOf(m)>=0)m=rnd(1,93);mins.push(m);}
+  mins.sort(function(a,b){return a-b;});
+  var ra=gA,rb=gB;
+  mins.forEach(function(m){
+    var doA;
+    if(ra>0&&rb>0)doA=Math.random()<(gA/(gA+gB));else doA=ra>0;
+    if(doA){ra--;evs.push({min:m,side:'a',name:nA[Math.floor(Math.random()*nA.length)]});}
+    else{rb--;evs.push({min:m,side:'b',name:nB[Math.floor(Math.random()*nB.length)]});}
+  });
+  return evs;
+}
+function getTeamNames(leagueIdx){
+  if(leagueIdx===0)return G.myNames;
+  var t=G.leagueTeams[leagueIdx-1];
+  return t?t.players.map(function(p){return p.name.split(' ').pop();}):['Jugador'];
+}
+
+function processNextFecha(){
+  G.fecha++;
+  // Mercado at 15
+  if(G.fecha===16&&!G.mercadoDone){showMercado();return;}
+
+  var round=SCHEDULE[G.fecha-1];
+  var myMatch=null,otherMatches=[];
+
+  round.forEach(function(pair){
+    var ai=pair[0],bi=pair[1];
+    var la=G.league[ai],lb=G.league[bi];
+    var ratA=leagueRat(la),ratB=leagueRat(lb);
+    var res=simResult(ratA,ratB);
+    var gA=res[0],gB=res[1];
+    var goals=buildGoals(gA,gB,getTeamNames(ai),getTeamNames(bi));
+    // Update standings
+    if(gA>gB){la.pts+=3;la.pg++;la.gf+=gA;la.gc+=gB;lb.pp++;lb.gf+=gB;lb.gc+=gA;}
+    else if(gA===gB){la.pts+=1;la.pe++;la.gf+=gA;la.gc+=gB;lb.pts+=1;lb.pe++;lb.gf+=gB;lb.gc+=gA;}
+    else{lb.pts+=3;lb.pg++;lb.gf+=gB;lb.gc+=gA;la.pp++;la.gf+=gA;la.gc+=gB;}
+    var isMe=ai===0||bi===0;
+    if(isMe){
+      var iWasA=ai===0;
+      var myG=iWasA?gA:gB,rivG=iWasA?gB:gA;
+      if(myG<rivG)G.invicto=false;
+      myMatch={ai:ai,bi:bi,la:la,lb:lb,gA:gA,gB:gB,goals:goals,iWasA:iWasA,myG:myG,rivG:rivG,
+        myResult:myG>rivG?'win':myG===rivG?'draw':'loss'};
+    } else {
+      otherMatches.push({ai:ai,bi:bi,la:la,lb:lb,gA:gA,gB:gB});
+    }
+  });
+
+  // Build fecha block and append
+  appendFechaBlock(myMatch,otherMatches);
+}
+
+function appendFechaBlock(myMatch,otherMatches){
+  var f=G.fecha;
+  var blockId='fecha-block-'+f;
+
+  // Build other matches HTML
+  var othersHtml='<div class="other-list">';
+  otherMatches.forEach(function(r){
+    var nameA=r.la.name,nameB=r.lb.name;
+    var abA=G.leagueTeams[r.ai-1]?G.leagueTeams[r.ai-1].abbr:'??';
+    var abB=G.leagueTeams[r.bi-1]?G.leagueTeams[r.bi-1].abbr:'??';
+    othersHtml+='<div class="other-row">'
+      +'<span class="other-abbr">'+abA+'</span><span class="other-name">'+nameA+'</span>'
+      +'<span class="other-score">'+r.gA+'\u2013'+r.gB+'</span>'
+      +'<span class="other-name" style="text-align:right">'+nameB+'</span>'
+      +'<span class="other-abbr">'+abB+'</span></div>';
+  });
+  othersHtml+='</div>';
+
+  // My match header
+  var r=myMatch;
+  var rivName=r.iWasA?r.lb.name:r.la.name;
+  var rivAbbr=r.iWasA?(G.leagueTeams[r.bi-1]?G.leagueTeams[r.bi-1].abbr:'??'):(G.leagueTeams[r.ai-1]?G.leagueTeams[r.ai-1].abbr:'??');
+  var scoreCls=r.myResult==='win'?' win':r.myResult==='loss'?' loss':'';
+  var resultTag=r.myResult==='win'?'\u2713':r.myResult==='loss'?'\u2715':'=';
+
+  var block=document.createElement('div');
+  block.id=blockId;
+  block.className='fecha-block';
+  block.innerHTML='<div class="fecha-hdr" onclick="toggleFecha(\''+blockId+'\')">'
+    +'<span class="fecha-tag">FECHA</span>'
+    +'<span class="fecha-num">'+f+'</span>'
+    +'<span class="fecha-result-tag'+scoreCls+'">'+r.myG+'\u2013'+r.rivG+' '+resultTag+'</span>'
+    +'<span class="fecha-toggle" id="toggle-'+blockId+'">\u25b2</span>'
+    +'</div>'
+    +'<div class="fecha-content" id="content-'+blockId+'">'
+    // My match card - starts with live indicator
+    +'<div class="match-card my-match">'
+    +'<div class="match-row">'
+    +'<span class="match-stage">GRUPOS</span>'
+    +'<span class="match-vs">vs</span>'
+    +'<span class="match-abbr">'+rivAbbr+'</span>'
+    +'<span class="match-name">'+rivName+'</span>'
+    +'<span class="match-score'+scoreCls+'" id="live-score-'+f+'">0\u20130</span>'
+    +'<span class="match-check" id="live-check-'+f+'"></span>'
+    +'</div>'
+    +'<div class="goal-feed" id="feed-'+f+'"></div>'
+    +'</div>'
+    // Other matches
+    +'<div class="otros-section"><div class="otros-label">OTROS RESULTADOS</div>'+othersHtml+'</div>'
+    +'</div>';
+
+  // Insert before prox-btn or append
+  var container=$('ligaMain');
+  var proxBtn=$('proxBtn');
+  if(proxBtn)container.removeChild(proxBtn);
+  container.appendChild(block);
+
+  // Sidebar
+  renderSidebar();
+
+  // Add next button
+  addProxBtn();
+
+  // Scroll to new block
+  block.scrollIntoView({behavior:'smooth',block:'start'});
+
+  // Animate my match events
+  animateFeed(f,myMatch,function(){
+    // done
+    var btn=$('proxBtn');
+    if(btn){
+      btn.disabled=false;
+      if(f>=30){btn.textContent='Ver resultado final \u2192';btn.onclick=showFin;}
+      else if(f===15&&!G.mercadoDone){btn.textContent='Mercado de pase \u2192';btn.onclick=showMercado;btn.className='prox-btn mercado';}
+      else{btn.textContent='Siguiente fecha \u2192';btn.onclick=processNextFecha;}
+    }
+  });
+}
+
+function animateFeed(f,match,done){
+  var feedEl=$('feed-'+f);
+  var scoreEl=$('live-score-'+f);
+  var checkEl=$('live-check-'+f);
+  var events=match.goals;
+  var sA=0,sB=0;
+  function next(idx){
+    if(idx>=events.length){
+      // Final score
+      var myG=match.myG,rivG=match.rivG;
+      scoreEl.textContent=myG+'\u2013'+rivG;
+      var scoreCls=match.myResult==='win'?' win':match.myResult==='loss'?' loss':'';
+      scoreEl.className='match-score'+scoreCls;
+      checkEl.textContent=match.myResult==='win'?' \u2713':match.myResult==='loss'?' \u2715':'';
+      checkEl.className='match-check'+(match.myResult==='win'?' green':match.myResult==='loss'?' red':'');
+      if(done)done();
+      return;
+    }
+    var ev=events[idx];
+    // Is this my goal?
+    var isMine=(match.iWasA&&ev.side==='a')||(!match.iWasA&&ev.side==='b');
+    if(ev.side==='a')sA++;else sB++;
+    var curMyG=match.iWasA?sA:sB,curRivG=match.iWasA?sB:sA;
+    scoreEl.textContent=curMyG+'\u2013'+curRivG;
+    var row=document.createElement('div');
+    row.className='goal-item anim';
+    row.innerHTML='<span class="goal-min">'+ev.min+'\'</span>'
+      +'<span class="goal-dot">&#9679;</span>'
+      +'<span class="goal-name'+(isMine?'':' against')+'">'+ev.name+'</span>'
+      +'<span class="goal-team-lbl">'+(isMine?'Tu equipo':(match.iWasA?match.lb.name:match.la.name))+'</span>';
+    feedEl.appendChild(row);
+    feedEl.scrollIntoView({behavior:'smooth',block:'nearest'});
+    setTimeout(function(){next(idx+1);},900);
+  }
+  // Kickoff
+  var ko=document.createElement('div');
+  ko.className='goal-item anim';
+  ko.innerHTML='<span class="goal-min">0\'</span><span class="goal-dot" style="color:#888">&#9203;</span><span class="goal-name" style="color:#888">Inicio del partido</span>';
+  feedEl.appendChild(ko);
+  setTimeout(function(){next(0);},600);
+}
+
+function addProxBtn(){
+  var btn=document.createElement('button');
+  btn.id='proxBtn';
+  btn.className='prox-btn';
+  btn.textContent='Siguiente fecha \u2192';
+  btn.disabled=true; // enabled after feed finishes
+  $('ligaMain').appendChild(btn);
+}
+
+function toggleFecha(id){
+  var c=$('content-'+id),t=$('toggle-'+id);
+  if(!c)return;
+  var open=c.style.display!=='none';
+  c.style.display=open?'none':'block';
+  if(t)t.textContent=open?'\u25bc':'\u25b2';
+}
+
+function renderSidebar(){
+  var sorted=[].concat(G.league).sort(function(a,b){
+    if(b.pts!==a.pts)return b.pts-a.pts;
+    var dA=a.gf-a.gc,dB=b.gf-b.gc;
+    if(dB!==dA)return dB-dA;return b.gf-a.gf;
+  });
+  $('sidTabla').innerHTML=sorted.map(function(t,i){
+    var isMe=t.id==='_me',dg=t.gf-t.gc,pj=t.pg+t.pe+t.pp;
+    return '<tr'+(isMe?' class="me"':'')+'>'
+      +'<td><span class="pos-num">'+(i+1)+'</span></td>'
+      +'<td class="tnm">'+t.name+'</td>'
+      +'<td class="n">'+pj+'</td><td class="pts">'+t.pts+'</td>'
+      +'<td class="n" style="color:'+(dg>0?'#1a6b2e':dg<0?'#c0392b':'#999')+'">'+(dg>0?'+':'')+dg+'</td>'
+      +'</tr>';
+  }).join('');
+  $('ligaInv').textContent=G.invicto?'\u2713 Invicto':'';
+  $('ligaMid').textContent='La campa\u00f1a \u00b7 Fecha '+G.fecha+' de 30';
+}
+
+// ── MERCADO ───────────────────────────────────────────────────────────────────
+function showMercado(){
+  G.mercadoChanges=0;
+  G.mktSelectedSlot=null; // which lineup slot to replace
+  G.rerolls=3;
+  $('mktChanges').textContent='0/3 cambios';
+  show('sMercado');
+  rollTeam(true);
+}
+
+function renderMercadoLeft(){
+  var t=G.team;
+  $('mktAbbr').textContent=t.abbr;$('mktName').textContent=t.name;
+  $('mktYear').textContent=t.year;$('mktDesc').textContent=t.desc;
+  var r=G.rerolls;
+  $('mktRrLabel').textContent=r>0?'No te convence? \xb7 '+r+' restante'+(r!==1?'s':''):'Sin sorteos';
+  $('mktRrBtn').disabled=r<=0;
+  var sorted=[].concat(t.players).sort(function(a,b){return b.rat-a.rat;});
+  $('mktPList').innerHTML=sorted.map(function(p){
+    var oi=t.players.indexOf(p);
+    // CORRECCIÓN: Comprueba si encaja en la posición de cualquier spot (sin exigir que esté vacío), ya que es un reemplazo.
+    var hasRoom=G.spots.some(function(s,si){return p.pos.indexOf(s.pos)>=0;});
+    return '<div class="prow'+(G.mktSelPlayer===oi?' psel':'')+(hasRoom?'':' pdone')+'" onclick="mktPickPlayer('+oi+')">'
+      +'<span class="p-num">#'+p.num+'</span><span class="p-name">'+p.name+'</span>'
+      +'<span class="p-pos">'+p.pos.join('/')+'</span>'
+      +'<span class="p-rat'+(p.rat>=85?' gold':'')+'">'+p.rat+'</span></div>';
+  }).join('');
+}
+
+function mktPickPlayer(idx){
+  G.mktSelPlayer=idx;
+  renderMercadoLeft();
+  renderMercadoField();
+}
+
+function renderMercadoField(){
+  var selPos=G.mktSelPlayer!==null?G.team.players[G.mktSelPlayer].pos:null;
+  var hasSel=selPos!==null;
+  var html='';
+  G.spots.forEach(function(s,i){
+    var slot=G.lineup[i],filled=!!slot;
+    // In mercado: all slots are filled; valid = player fits this pos
+    var valid=hasSel&&filled&&selPos.indexOf(s.pos)>=0;
+    var dim=hasSel&&filled&&selPos.indexOf(s.pos)<0;
+    var label=filled?slot.player.name.split(' ').pop():s.pos;
+    var fs=9;
+    var fill=valid?'rgba(100,230,100,.3)':'rgba(255,255,255,1)';
+    var stroke=valid?'rgba(100,230,100,.95)':dim?'rgba(255,255,255,.4)':'rgba(255,255,255,1)';
+    var sw=valid?2.5:1.5;
+    var tc=dim?'#aaa':'#1a3a1a';
+    var ty=s.y+4;
+    var inner='<text x="'+s.x+'" y="'+(s.y-5)+'" text-anchor="middle" font-size="6" font-family="Barlow Condensed,sans-serif" fill="#3a5c3a" font-weight="800">'+slot.abbr+'</text>';
+    inner+='<text x="'+s.x+'" y="'+ty+'" text-anchor="middle" font-size="'+fs+'" font-family="Barlow Condensed,sans-serif" fill="'+tc+'" font-weight="800">'+label+'</text>';
+    html+='<g onclick="mktPlacePlayer('+i+')" style="cursor:'+(valid?'pointer':'default')+'">'
+      +'<circle cx="'+s.x+'" cy="'+s.y+'" r="20" fill="'+fill+'" stroke="'+stroke+'" stroke-width="'+sw+'"/>'
+      +inner+'</g>';
+  });
+  $('mktFieldSpots').innerHTML=html;
+}
+
+function mktPlacePlayer(i){
+  if(G.mktSelPlayer===null)return;
+  if(G.mercadoChanges>=3)return;
+  var p=G.team.players[G.mktSelPlayer];
+  if(p.pos.indexOf(G.spots[i].pos)<0)return;
+  // Replace
+  G.lineup[i]={player:p,abbr:G.team.abbr,teamName:G.team.name,teamYear:G.team.year};
+  G.mercadoChanges++;
+  $('mktChanges').textContent=G.mercadoChanges+'/3 cambios';
+  G.mktSelPlayer=null;
+  // Update stats
+  G.myRat=Math.round(G.lineup.reduce(function(s,sl){return s+(sl?sl.player.rat:70);},0)/G.spots.length);
+  G.myNames=G.lineup.filter(Boolean).map(function(sl){return sl.player.name.split(' ').pop();});
+  G.league[0].rat=G.myRat;
+  // Roll new team for next change if under limit
+  if(G.mercadoChanges<3)rollTeam(true);
+  else{renderMercadoLeft();renderMercadoField();}
+}
+
+function confirmMercado(){
+  G.mercadoDone=true;
+  show('sLiga');
+  processNextFecha();
+}
+
+// ── FIN ───────────────────────────────────────────────────────────────────────
+function showFin(){
+  var sorted=[].concat(G.league).sort(function(a,b){
+    if(b.pts!==a.pts)return b.pts-a.pts;
+    var dA=a.gf-a.gc,dB=b.gf-b.gc;
+    if(dB!==dA)return dB-dA;return b.gf-a.gf;
+  });
+  var myPos=sorted.findIndex(function(t){return t.id==='_me';})+1;
+  var champ=sorted[0],isC=champ.id==='_me';
+  $('finEmo').textContent=isC?'\uD83C\uDFC6':myPos<=3?'\uD83E\uDD49':'\uD83D\uDCCB';
+  $('finTit').innerHTML=isC?'&#161;Campeon'+(G.invicto?' invicto':'')+'!':'Terminaste '+myPos+'\u00ba de 16';
+  $('finDesc').textContent=isC&&G.invicto?'30 fechas sin perder. La temporada perfecta.':isC?'Campeon con '+champ.pts+' puntos.':champ.name+' campeon con '+champ.pts+' pts. Terminaste '+myPos+'o.';
+  $('finTbl').innerHTML=sorted.map(function(t,i){
+    var isMe=t.id==='_me',dg=t.gf-t.gc,pj=t.pg+t.pe+t.pp;
+    return '<tr'+(isMe?' class="me"':'')+'>'
+      +'<td style="color:#bbb;font-size:11px">'+(i+1)+'</td>'
+      +'<td class="tnm">'+t.name+'</td>'
+      +'<td class="n">'+pj+'</td><td class="pts">'+t.pts+'</td>'
+      +'<td class="n" style="color:'+(dg>0?'#1a6b2e':dg<0?'#c0392b':'#999')+'">'+(dg>0?'+':'')+dg+'</td>'
+      +'<td class="n">'+t.gf+'</td></tr>';
+  }).join('');
+  show('sFin');
+}
+function resetGame(){G={};document.querySelectorAll('.fbtn').forEach(function(b){b.classList.remove('sel');});$('goBtn').disabled=true;show('sSetup');}
+
+// lu-list sync for mercado
+function renderMercadoRight(){
+  if(!$('luList2'))return;
+  $('luList2').innerHTML=G.spots.map(function(s,i){
+    var sl=G.lineup[i];
+    return '<div class="lu-row"><span class="lu-pos">'+s.pos+'</span>'
+      +(sl?'<span class="lu-name">'+sl.player.name.split(' ').pop()+'</span><span class="lu-abbr">'+sl.abbr+'</span>':'<span style="color:#ddd">--</span>')+'</div>';
+  }).join('');
+}
+// Override mktPlacePlayer to also update right panel
+var _origMktPlace=mktPlacePlayer;
+mktPlacePlayer=function(i){_origMktPlace(i);renderMercadoRight();};
+var _origShowMercado=showMercado;
+showMercado=function(){_origShowMercado();renderMercadoRight();};
+</script>
+</body>
+</html>
