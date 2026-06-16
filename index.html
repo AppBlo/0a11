@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>0a11 Chile</title>
+<title>7a0 Chile</title>
 <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;800;900&family=Barlow:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
@@ -144,24 +144,70 @@ table.t td.pts{font-weight:900;font-size:16px;text-align:center}
 table.t tr.me td{background:#fffbe6}
 table.t td.tnm{font-weight:600}
 .next-btn{font-family:"Barlow Condensed",sans-serif;font-size:16px;font-weight:800;text-transform:uppercase;padding:12px 30px;background:#c0392b;color:#fff;border:none;border-radius:3px;cursor:pointer}
+
+/* ---- CORRECCIONES PARA MÓVILES ---- */
+@media (max-width: 768px) {
+  .game-cols {
+    display: flex;
+    flex-direction: column;
+    overflow-y: visible;
+  }
+  .pl {
+    border-right: none;
+    border-bottom: 1px solid #e8e4de;
+    max-height: 380px; /* Evita que la lista de jugadores empuje demasiado abajo */
+    overflow-y: auto;
+  }
+  .field-wrap {
+    padding: 24px 0;
+  }
+  .pr {
+    border-left: none;
+    border-top: 1px solid #e8e4de;
+  }
+  .liga-body {
+    display: flex;
+    flex-direction: column;
+    overflow-y: visible;
+  }
+  .liga-main {
+    overflow-y: visible;
+  }
+  .liga-sidebar {
+    border-left: none;
+    border-top: 1px solid #ddd;
+  }
+  .mkt-info {
+    flex-direction: column;
+    align-items: stretch;
+    text-align: center;
+    gap: 12px;
+  }
+  .mkt-changes {
+    margin-left: auto;
+    margin-right: auto;
+  }
+  .mkt-confirm {
+    width: 100%;
+    text-align: center;
+  }
+}
 </style>
 </head>
 <body>
 
-<!-- SETUP -->
 <div id="sSetup" class="screen active"><div class="sw">
-  <div class="ey">Pantalla inicial </div>
-  <div class="big-title">Juega<br>0a11 </div>
-  <div class="sub">Entonces elige la formaci&#243;n y draftea tu XI una sola vez. Luego juegas 30 fechas contra otros 15 equipos hist&#243;ricos.</div>
+  <div class="ey">Zona de juego / Empieza ahora</div>
+  <div class="big-title">Juega<br>7a0 Chile</div>
+  <div class="sub">Elige la formaci&#243;n y draftea tu XI una sola vez. Luego jug&#225;s 30 fechas contra los otros 15 equipos hist&#243;ricos.</div>
   <div class="sec-lbl">Elige tu formaci&#243;n</div>
   <div class="forma-grid" id="formaGrid"></div>
   <button class="go-btn" id="goBtn" onclick="startDraft()" disabled>&#127922; &nbsp;Empezar draft</button>
 </div></div>
 
-<!-- DRAFT -->
 <div id="sDraft" class="screen">
   <div class="topbar">
-    <div class="tb-logo">0a11</div>
+    <div class="tb-logo">7a0</div>
     <div class="tb-mid" id="tbMid">Draft &middot; Arma tu XI</div>
     <div class="tb-right" id="tbForma">4-3-3</div>
   </div>
@@ -205,7 +251,6 @@ table.t td.tnm{font-weight:600}
   </div>
 </div>
 
-<!-- MERCADO -->
 <div id="sMercado" class="screen">
   <div class="topbar"><div class="tb-logo">7a0</div><div class="tb-mid">Mercado de pase &middot; Mitad de temporada</div></div>
   <div class="mkt-info">
@@ -250,10 +295,9 @@ table.t td.tnm{font-weight:600}
   </div>
 </div>
 
-<!-- LIGA -->
 <div id="sLiga" class="screen">
   <div class="topbar">
-    <div class="tb-logo">0a11</div>
+    <div class="tb-logo">7a0</div>
     <div class="tb-mid" id="ligaMid">La campa&#241;a &middot; Fecha 1 de 30</div>
     <div class="tb-right" id="ligaInv"></div>
   </div>
@@ -269,7 +313,6 @@ table.t td.tnm{font-weight:600}
   </div>
 </div>
 
-<!-- FIN -->
 <div id="sFin" class="screen"><div class="fw">
   <div class="fe" id="finEmo">&#127942;</div>
   <div class="ft" id="finTit">Campeon!</div>
@@ -291,7 +334,7 @@ var TEAMS=[
   {id:"cc06",abbr:"CC",name:"Colo-Colo",year:"2006",desc:"Finalista de Sudamericana y Bicampeon con Borghi. Matias, Valdivia y Suazo.",players:[{num:1,name:"Claudio Bravo",pos:["ARQ"],rat:84},{num:2,name:"Alvaro Ormeno",pos:["LD"],rat:78},{num:3,name:"Luis Mena",pos:["DFC"],rat:76},{num:4,name:"David Henriquez",pos:["DFC"],rat:79},{num:5,name:"Arturo Vidal",pos:["LI","DFC","VOL"],rat:82},{num:6,name:"Rodrigo Melendez",pos:["VOL"],rat:80},{num:7,name:"Gonzalo Fierro",pos:["ED","LD"],rat:81},{num:8,name:"Matias Fernandez",pos:["MC"],rat:89},{num:9,name:"Humberto Suazo",pos:["DC"],rat:88},{num:10,name:"Jorge Valdivia",pos:["MC"],rat:87},{num:11,name:"Alexis Sanchez",pos:["EI","ED"],rat:81}]},
   {id:"ud11",abbr:"UD",name:"U. de Chile",year:"2011",desc:"Campeon de la Sudamericana invicto. El ballet de Sampaoli.",players:[{num:1,name:"Johnny Herrera",pos:["ARQ"],rat:86},{num:2,name:"Matias Rodriguez",pos:["LD","ED"],rat:83},{num:3,name:"Osvaldo Gonzalez",pos:["DFC"],rat:82},{num:4,name:"Marcos Gonzalez",pos:["DFC"],rat:83},{num:5,name:"Jose Rojas",pos:["LI","DFC"],rat:81},{num:6,name:"Marcelo Diaz",pos:["VOL","MC"],rat:85},{num:7,name:"Charles Aranguiz",pos:["MC","VOL"],rat:86},{num:8,name:"Gustavo Lorenzetti",pos:["MC"],rat:82},{num:9,name:"Eduardo Vargas",pos:["ED","DC"],rat:89},{num:10,name:"Gustavo Canales",pos:["DC"],rat:83},{num:11,name:"Francisco Castro",pos:["EI"],rat:76}]},
   {id:"uc94",abbr:"UC",name:"U. Catolica",year:"1994",desc:"Subcampeon con Pellegrini. Gorosito y Acosta, dupla letal.",players:[{num:1,name:"Patricio Toledo",pos:["ARQ"],rat:81},{num:2,name:"Andres Romero",pos:["LD"],rat:76},{num:3,name:"Sergio Vazquez",pos:["DFC"],rat:83},{num:4,name:"Daniel Lopez",pos:["DFC"],rat:75},{num:5,name:"Raimundo Tupper",pos:["LI","LD"],rat:80},{num:6,name:"Mario Lepe",pos:["VOL"],rat:82},{num:7,name:"Nelson Parraguez",pos:["VOL","MC"],rat:80},{num:8,name:"Jorge Vazquez",pos:["MC"],rat:77},{num:9,name:"Rodrigo Barrera",pos:["ED","DC"],rat:81},{num:10,name:"Nestor Gorosito",pos:["MC"],rat:88},{num:11,name:"Alberto Acosta",pos:["DC"],rat:87}]},
-  {id:"ucte",abbr:"UC",name:"U. Catolica",year:"2022",desc:"Historico Tetracampeonato 2018-2022. Zampedri y Fuenzalida.",players:[{num:1,name:"Matias Dituro",pos:["ARQ"],rat:83},{num:2,name:"Jose Pedro Fuenzalida",pos:["LD","ED"],rat:81},{num:3,name:"German Lanaro",pos:["DFC"],rat:77},{num:4,name:"Valber Huerta",pos:["DFC"],rat:80},{num:5,name:"Alfonso Parot",pos:["LI"],rat:76},{num:6,name:"Ignacio Saavedra",pos:["VOL"],rat:77},{num:7,name:"Marcelino Nunez",pos:["MC"],rat:80},{num:8,name:"Luciano Aued",pos:["MC","VOL"],rat:79},{num:9,name:"Diego Valencia",pos:["ED","DC"],rat:77},{num:10,name:"Fernando Zampedri",pos:["DC"],rat:84},{num:11,name:"Edson Puch",pos:["EI"],rat:80}]},
+  {id:"ucte",abbr:"UC",name:"U. Catolica",year:"2021",desc:"Historico Tetracampeonato 2018-2021. Zampedri y Fuenzalida.",players:[{num:1,name:"Matias Dituro",pos:["ARQ"],rat:83},{num:2,name:"Jose Pedro Fuenzalida",pos:["LD","ED"],rat:81},{num:3,name:"German Lanaro",pos:["DFC"],rat:77},{num:4,name:"Valber Huerta",pos:["DFC"],rat:80},{num:5,name:"Alfonso Parot",pos:["LI"],rat:76},{num:6,name:"Ignacio Saavedra",pos:["VOL"],rat:77},{num:7,name:"Marcelino Nunez",pos:["MC"],rat:80},{num:8,name:"Luciano Aued",pos:["MC","VOL"],rat:79},{num:9,name:"Diego Valencia",pos:["ED","DC"],rat:77},{num:10,name:"Fernando Zampedri",pos:["DC"],rat:84},{num:11,name:"Edson Puch",pos:["EI"],rat:80}]},
   {id:"cob81",abbr:"COB",name:"Cobreloa",year:"1981",desc:"Finalista de Copa Libertadores. El gigante del norte de Vicente Cantatore.",players:[{num:1,name:"Oscar Wirth",pos:["ARQ"],rat:82},{num:2,name:"Hugo Tabilo",pos:["LD"],rat:78},{num:3,name:"Juan Jacovenko",pos:["DFC"],rat:77},{num:4,name:"Mario Soto",pos:["DFC"],rat:85},{num:5,name:"Enzo Escobar",pos:["LI"],rat:81},{num:6,name:"Armando Alarcon",pos:["VOL"],rat:79},{num:7,name:"Victor Merello",pos:["MC","VOL"],rat:83},{num:8,name:"Ruben Gomez",pos:["MC"],rat:78},{num:9,name:"Jorge Luis Siviero",pos:["DC"],rat:82},{num:10,name:"Hector Puebla",pos:["VOL","LI","ED"],rat:83},{num:11,name:"Washington Olivera",pos:["EI"],rat:81}]},
   {id:"ue75",abbr:"UE",name:"Union Espanola",year:"1975",desc:"Finalista de Copa Libertadores y Campeon Nacional. El equipazo de Luis Santibanez.",players:[{num:1,name:"Leopoldo Vallejos",pos:["ARQ"],rat:81},{num:2,name:"Juan Machuca",pos:["LD"],rat:82},{num:3,name:"Hugo Berly",pos:["DFC"],rat:79},{num:4,name:"Mario Soto",pos:["DFC"],rat:81},{num:5,name:"Antonio Arias",pos:["LI"],rat:83},{num:6,name:"Alfonso Lara",pos:["VOL"],rat:80},{num:7,name:"Francisco Las Heras",pos:["MC"],rat:79},{num:8,name:"Alejandro Trujillo",pos:["DC"],rat:80},{num:9,name:"Sergio Ahumada",pos:["ED","DC"],rat:82},{num:10,name:"Jorge Spedaletti",pos:["DC"],rat:83},{num:11,name:"Leonardo Veliz",pos:["EI"],rat:82}]},
   {id:"ud94",abbr:"UD",name:"U. de Chile",year:"1994",desc:"Campeon tras 25 anos de sequia. Marcelo Salas nace como mito.",players:[{num:1,name:"Sergio Vargas",pos:["ARQ"],rat:86},{num:2,name:"Cristian Castaneda",pos:["LD"],rat:79},{num:3,name:"Ronald Fuentes",pos:["DFC"],rat:82},{num:4,name:"Rogelio Delgado",pos:["DFC"],rat:83},{num:5,name:"Fabian Guevara",pos:["LI"],rat:78},{num:6,name:"Luis Musrri",pos:["VOL"],rat:82},{num:7,name:"Patricio Mardones",pos:["MC"],rat:81},{num:8,name:"Esteban Valencia",pos:["MC"],rat:82},{num:9,name:"Juan Carlos Ibanez",pos:["DC"],rat:80},{num:10,name:"Raul Aredes",pos:["MC"],rat:81},{num:11,name:"Marcelo Salas",pos:["DC","EI"],rat:88}]},
@@ -299,7 +342,7 @@ var TEAMS=[
   {id:"ai07",abbr:"AI",name:"Audax Italiano",year:"2007",desc:"Campanon en Libertadores y torneo local con Raul Toro. Villanueva descollante.",players:[{num:1,name:"Nicolas Peric",pos:["ARQ"],rat:80},{num:2,name:"Boris Rieloff",pos:["LD"],rat:78},{num:3,name:"Jorge Carrasco",pos:["DFC"],rat:75},{num:4,name:"Juan Gonzalez",pos:["DFC"],rat:74},{num:5,name:"Roberto Cereceda",pos:["LI"],rat:77},{num:6,name:"Braulio Leal",pos:["VOL"],rat:76},{num:7,name:"Miguel Angel Romero",pos:["MC"],rat:75},{num:8,name:"Carlos Villanueva",pos:["MC"],rat:84},{num:9,name:"Rodolfo Moya",pos:["ED"],rat:77},{num:10,name:"Leonardo Medina",pos:["DC"],rat:76},{num:11,name:"Franco Di Santo",pos:["DC"],rat:78}]},
   {id:"oh13",abbr:"OH",name:"O'Higgins",year:"2013",desc:"Primer titulo en la historia de Rancagua, de la mano de Eduardo Berizzo.",players:[{num:1,name:"Paulo Garces",pos:["ARQ"],rat:79},{num:2,name:"Yerson Opazo",pos:["LD"],rat:77},{num:3,name:"Mariano Uglessich",pos:["DFC"],rat:76},{num:4,name:"Julio Barroso",pos:["DFC"],rat:82},{num:5,name:"Alejandro Lopez",pos:["LI"],rat:74},{num:6,name:"Cesar Fuentes",pos:["VOL"],rat:76},{num:7,name:"Braulio Leal",pos:["MC","VOL"],rat:78},{num:8,name:"Pedro Pablo Hernandez",pos:["MC"],rat:82},{num:9,name:"Luis Pedro Figueroa",pos:["ED"],rat:78},{num:10,name:"Pablo Calandria",pos:["DC"],rat:80},{num:11,name:"Gonzalo Barriga",pos:["EI"],rat:76}]},
   {id:"nub22",abbr:"NB",name:"Nublense",year:"2022",desc:"Historico subcampeonato y clasificacion a Libertadores con Jaime Garcia.",players:[{num:1,name:"Nicola Perez",pos:["ARQ"],rat:79},{num:2,name:"Bernardo Cerezo",pos:["LD"],rat:75},{num:3,name:"Nicolas Vargas",pos:["DFC"],rat:76},{num:4,name:"Rafael Caroca",pos:["DFC","VOL"],rat:76},{num:5,name:"Jovany Campusano",pos:["LI"],rat:75},{num:6,name:"Lorenzo Reyes",pos:["VOL"],rat:78},{num:7,name:"Federico Mateos",pos:["MC"],rat:79},{num:8,name:"Manuel Rivera",pos:["MC"],rat:74},{num:9,name:"Alexander Aravena",pos:["ED","DC"],rat:78},{num:10,name:"Nicolas Guerra",pos:["DC"],rat:76},{num:11,name:"Patricio Rubio",pos:["EI","DC"],rat:77}]},
-  {id:"uc16",abbr:"UC",name:"U. Catolica",year:"16",desc:"Primer Bicampeonato de la franja (Clausura-Apertura). Comandados por Mario Salas.",players:[{num:1,name:"Cristopher Toselli",pos:["ARQ"],rat:80},{num:2,name:"Stefano Magnasco",pos:["LD"],rat:75},{num:3,name:"German Lanaro",pos:["DFC"],rat:77},{num:4,name:"Guillermo Maripan",pos:["DFC"],rat:79},{num:5,name:"Alfonso Parot",pos:["LI"],rat:76},{num:6,name:"Cesar Fuentes",pos:["VOL"],rat:76},{num:7,name:"Enzo Kalinski",pos:["MC","VOL"],rat:78},{num:8,name:"Diego Buonanotte",pos:["MC"],rat:83},{num:9,name:"Jose Pedro Fuenzalida",pos:["ED"],rat:81},{num:10,name:"Nicolas Castillo",pos:["DC"],rat:85},{num:11,name:"Ricardo Noir",pos:["EI"],rat:76}]},
+  {id:"uc16",abbr:"UC",name:"U. Catolica",year:"2016",desc:"Primer Bicampeonato de la franja (Clausura-Apertura). Comandados por Mario Salas.",players:[{num:1,name:"Cristopher Toselli",pos:["ARQ"],rat:80},{num:2,name:"Stefano Magnasco",pos:["LD"],rat:75},{num:3,name:"German Lanaro",pos:["DFC"],rat:77},{num:4,name:"Guillermo Maripan",pos:["DFC"],rat:79},{num:5,name:"Alfonso Parot",pos:["LI"],rat:76},{num:6,name:"Cesar Fuentes",pos:["VOL"],rat:76},{num:7,name:"Enzo Kalinski",pos:["MC","VOL"],rat:78},{num:8,name:"Diego Buonanotte",pos:["MC"],rat:83},{num:9,name:"Jose Pedro Fuenzalida",pos:["ED"],rat:81},{num:10,name:"Nicolas Castillo",pos:["DC"],rat:85},{num:11,name:"Ricardo Noir",pos:["EI"],rat:76}]},
   {id:"ud10",abbr:"UD",name:"U. de Chile",year:"2010",desc:"Semifinalistas de Copa Libertadores con Pelusso. Montillo figura.",players:[{num:1,name:"Miguel Pinto",pos:["ARQ"],rat:81},{num:2,name:"Matias Rodriguez",pos:["LD"],rat:78},{num:3,name:"Mauricio Victorino",pos:["DFC"],rat:82},{num:4,name:"Rafael Olarra",pos:["DFC"],rat:79},{num:5,name:"Jose Rojas",pos:["LI"],rat:78},{num:6,name:"Felipe Seymour",pos:["VOL"],rat:78},{num:7,name:"Manuel Iturra",pos:["VOL","MC"],rat:79},{num:8,name:"Walter Montillo",pos:["MC"],rat:85},{num:9,name:"Eduardo Vargas",pos:["ED"],rat:77},{num:10,name:"Juan Manuel Olivera",pos:["DC"],rat:82},{num:11,name:"Edson Puch",pos:["EI"],rat:79}]}
 ];
 
@@ -689,12 +732,13 @@ function renderMercadoLeft(){
   var r=G.rerolls;
   $('mktRrLabel').textContent=r>0?'No te convence? \xb7 '+r+' restante'+(r!==1?'s':''):'Sin sorteos';
   $('mktRrBtn').disabled=r<=0;
-  var sorted=[].concat(t.players).sort(function(a,b){return b.rat-a.rat;});
-  $('mktPList').innerHTML=sorted.map(function(p){
-    var oi=t.players.indexOf(p);
-    // CORRECCIÓN: Comprueba si encaja en la posición de cualquier spot (sin exigir que esté vacío), ya que es un reemplazo.
+  
+  // FIX: Guardar el array ordenado globalmente
+  G.mktSortedPlayers = [].concat(t.players).sort(function(a,b){return b.rat-a.rat;});
+  
+  $('mktPList').innerHTML=G.mktSortedPlayers.map(function(p, idx){
     var hasRoom=G.spots.some(function(s,si){return p.pos.indexOf(s.pos)>=0;});
-    return '<div class="prow'+(G.mktSelPlayer===oi?' psel':'')+(hasRoom?'':' pdone')+'" onclick="mktPickPlayer('+oi+')">'
+    return '<div class="prow'+(G.mktSelPlayer===idx?' psel':'')+(hasRoom?'':' pdone')+'" onclick="mktPickPlayer('+idx+')">'
       +'<span class="p-num">#'+p.num+'</span><span class="p-name">'+p.name+'</span>'
       +'<span class="p-pos">'+p.pos.join('/')+'</span>'
       +'<span class="p-rat'+(p.rat>=85?' gold':'')+'">'+p.rat+'</span></div>';
@@ -708,7 +752,7 @@ function mktPickPlayer(idx){
 }
 
 function renderMercadoField(){
-  var selPos=G.mktSelPlayer!==null?G.team.players[G.mktSelPlayer].pos:null;
+  var selPos=G.mktSelPlayer!==null?G.mktSortedPlayers[G.mktSelPlayer].pos:null;
   var hasSel=selPos!==null;
   var html='';
   G.spots.forEach(function(s,i){
@@ -735,7 +779,7 @@ function renderMercadoField(){
 function mktPlacePlayer(i){
   if(G.mktSelPlayer===null)return;
   if(G.mercadoChanges>=3)return;
-  var p=G.team.players[G.mktSelPlayer];
+  var p=G.mktSortedPlayers[G.mktSelPlayer];
   if(p.pos.indexOf(G.spots[i].pos)<0)return;
   // Replace
   G.lineup[i]={player:p,abbr:G.team.abbr,teamName:G.team.name,teamYear:G.team.year};
